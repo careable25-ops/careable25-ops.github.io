@@ -3,19 +3,24 @@ font-family: Arial, sans-serif;
 background:#f5f7ff;
 text-align:center;
 margin:0;
+padding:0;
 }
+
+/* HEADER */
 
 header{
 background:#4f6df5;
 color:white;
-padding:40px;
+padding:40px 20px;
 }
+
+/* MENU CARD */
 
 .menu{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
-padding:40px;
+padding:40px 20px;
 }
 
 .card{
@@ -37,15 +42,27 @@ background:#e9edff;
 background:#ffe082;
 }
 
+/* MEDIA */
+
+img{
+max-width:100%;
+height:auto;
+}
+
+/* IFRAME */
+
 iframe{
 width:90%;
+max-width:900px;
 height:600px;
 border:none;
 margin-top:20px;
 }
 
+/* BUTTON */
+
 button{
-padding:10px 20px;
+padding:12px 22px;
 border:none;
 border-radius:10px;
 background:#4f6df5;
@@ -54,12 +71,13 @@ font-size:16px;
 cursor:pointer;
 }
 
+/* FOOTER */
 
 .footer{
 background:#e5e7eb;
 text-align:center;
 padding:40px 20px;
-margin-top:270px;
+margin-top:60px;
 font-size:18px;
 }
 
@@ -82,6 +100,8 @@ transition:0.3s;
 .top-btn:hover{
 background:#3b55d1;
 }
+
+/* VIDEO */
 
 .video-container{
 width:90%;
@@ -108,24 +128,99 @@ border-radius:10px;
 font-size:18px;
 }
 
-.modul-container{
+/* MODUL */
 
+.modul-container{
 width:90%;
 max-width:900px;
-
 margin:auto;
 margin-top:20px;
-
 }
 
 .modul-viewer{
-
 width:100%;
 height:700px;
-
 border:none;
 border-radius:10px;
-
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ========================== */
+/* RESPONSIVE TABLET */
+/* ========================== */
+
+@media (max-width:768px){
+
+header{
+padding:25px 15px;
+}
+
+.menu{
+grid-template-columns:1fr;
+padding:20px;
+}
+
+.card{
+font-size:18px;
+padding:20px;
+}
+
+iframe{
+height:450px;
+}
+
+.modul-viewer{
+height:500px;
+}
+
+.footer{
+font-size:16px;
+}
+
+}
+
+/* ========================== */
+/* RESPONSIVE HP */
+/* ========================== */
+
+@media (max-width:480px){
+
+body{
+font-size:16px;
+}
+
+h1{
+font-size:24px;
+}
+
+h2{
+font-size:20px;
+}
+
+.card{
+font-size:16px;
+padding:18px;
+}
+
+button{
+width:100%;
+}
+
+iframe{
+height:350px;
+}
+
+.modul-viewer{
+height:420px;
+}
+
+.play-button{
+font-size:16px;
+padding:10px 16px;
+}
+
+.footer{
+padding:25px 15px;
+}
 
 }
