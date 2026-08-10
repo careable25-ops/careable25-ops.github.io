@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edukasi SLB Negeri 1 Makassar</title>
+    <!-- Tetap memanggil style.css aslinya untuk kebutuhan global -->
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Baloo+2:wght@700;800&display=swap");
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: "Nunito", sans-serif;
+            background: #29abe2;
+        }
+
+        /* ══════════════════════════
+           INTRO STAGE
+        ══════════════════════════ */
+        #stage {
+            position: fixed; inset: 0;
+            background: #29abe2; cursor: pointer;
+            overflow: hidden; z-index: 100;
+        }
+        #h-line {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            height: 6px; width: 0; background: white;
+            border-radius: 3px; opacity: 0;
+        }
+        #ring {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0; height: 0; border-radius: 50%;
+            border: 6px solid white; background: transparent;
+            opacity: 0; z-index: 5;
+        }
+        #dora-intro {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 140px; height: 140px; object-fit: contain;
+            z-index: 10; opacity: 0;
+            filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.25));
+        }
+        #intro-text {
+            position: absolute; bottom: 16%; left: 50%;
+            transform: translateX(-50%);
+            font-family: "Baloo 2", cursive;
+            font-size: clamp(12px, 2.6vw, 18px); font-weight: 800;
+            color: white; letter-spacing: 3px;
+            white-space: nowrap; opacity: 0; z-index: 20;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ══════════════════════════
+           MENU
+        ══════════════════════════ */
+        #screen-menu {
+            position: fixed; inset: 0;
+            background: #e8f4fb;
+            display: flex; flex-direction: column;
+            opacity: 0; pointer-events: none; z-index: 50;
+            transition: opacity 0.5s ease;
+        }
+        #screen-menu.show {
+            opacity: 1; pointer-events: all;
+        }
+        #menu-wrap {
+            flex: 1; display: flex; flex-direction: column;
+            margin: 24px; background: white;
+            border-radius: 32px;
+            box-shadow: 0 8px 48px rgba(41, 171, 226, 0.2);
+            overflow: hidden;
+        }
+        #menu-tiles {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px; padding: 24px 24px 0;
+            flex: 1;
+        }
+        .menu-tile {
+            background: #29abe2; border-radius: 24px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px 12px; cursor: pointer;
+            text-align: center; line-height: 1.3;
+            font-family: "Baloo 2", cursive;
+            font-size: clamp(16px, 2vw, 24px); font-weight: 800;
+            color: white; box-shadow: 0 6px 20px rgba(41, 171, 226, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+            transform: translateY(-40px) scale(0.9);
+            opacity: 0; min-height: 0; text-decoration: none;
+        }
+        .menu-tile small {
+            font-size: clamp(11px, 1.3vw, 15px); font-weight: 700;
+            opacity: 0.85; margin-top: 5px;
+        }
+        .menu-tile .icon {
+            font-size: 32px; margin-bottom: 8px;
+        }
+        .menu-tile:hover {
+            transform: scale(1.04) !important;
+            box-shadow: 0 10px 30px rgba(41, 171, 226, 0.5);
+        }
+        .menu-tile.drop {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+        }
+        #menu-bottom {
+            height: 200px; display: flex;
+            align-items: flex-end; padding: 0 32px;
+            position: relative; flex-shrink: 0;
+        }
+        #menu-dora-shadow {
+            position: absolute; bottom: 0; left: 32px;
+            width: 150px; height: 22px;
+            background: radial-gradient(ellipse, rgba(41, 171, 226, 0.4) 0%, transparent 70%);
+            border-radius: 50%; transform: translateX(-100px);
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+        }
+        #menu-dora-shadow.walk {
+            transform: translateX(0); opacity: 1;
+        }
+        #menu-dora-sit {
+            width: 170px; object-fit: contain; flex-shrink: 0;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+            transform: translateX(-120px); opacity: 0;
+            transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+            margin-bottom: 10px;
+        }
+        #menu-dora-sit.walk {
+            transform: translateX(0); opacity: 1;
+        }
+        #menu-speech {
+            flex: 1; padding: 0 24px 32px;
+            font-family: "Baloo 2", cursive;
+            font-size: clamp(20px, 2.8vw, 32px); font-weight: 800;
+            color: #29abe2; line-height: 1.4;
+            transform: translateX(40px); opacity: 0;
+            transition: transform 0.7s ease, opacity 0.6s ease;
+        }
+        #menu-speech.show {
+            transform: translateX(0); opacity: 1;
+        }
+        
+        /* Media query untuk hp/layar kecil */
+        @media (max-width: 600px) {
+            #menu-tiles {
+                grid-template-columns: 1fr; /* Jadi satu kolom saat sempit */
+                overflow-y: auto; /* Agar bisa di-scroll jika menu terlalu banyak */
+                padding-bottom: 24px;
+            }
+            #menu-bottom {
+                height: 140px;
+            }
+            #menu-dora-sit {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRO STAGE -->
+    <div id="stage" onclick="toMenu()">
+        <div id="h-line"></div>
+        <div id="ring"></div>
+        <img
+            id="dora-intro"
+            src="https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png"
+            onerror="this.src = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 90%22><ellipse cx=%2240%22 cy=%2244%22 rx=%2238%22 ry=%2240%22 fill=%22%2300a0e9%22/></svg>'"
+            alt=""
+        />
+        <div id="intro-text">
+            HALO SEMUANYA AYO BELAJAR BERSAMA SAFE-ABLE
+        </div>
+    </div>
+
+    <!-- MENU SCREEN -->
+    <div id="screen-menu">
+        <div id="menu-wrap">
+            <div id="menu-tiles">
+                <a href="materi1.html" class="menu-tile" id="mt1">
+                    <div class="icon">🛡️</div>
+                    Perlindungan Diri<br /><small>Belajar melindungi diri dari bahaya</small>
+                </a>
+                <a href="materi2.html" class="menu-tile" id="mt2">
+                    <div class="icon">🌱</div>
+                    Reproduksi & Pubertas<br /><small>Mengenal perubahan tubuh</small>
+                </a>
+                <a href="materi3.html" class="menu-tile" id="mt3">
+                    <div class="icon">✋</div>
+                    Sentuhan Aman<br /><small>Kenali sentuhan aman dan tidak aman</small>
+                </a>
+                <a href="modul.html" class="menu-tile" id="mt4">
+                    <div class="icon">📚</div>
+                    Modul Pembelajaran<br /><small>Baca modul edukasi</small>
+                </a>
+            </div>
+            <div id="menu-bottom">
+                <div id="menu-dora-shadow"></div>
+                <img
+                    id="menu-dora-sit"
+                    src="https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png"
+                    onerror="this.style.display = 'none'"
+                    alt=""
+                />
+                <div id="menu-speech">Mau belajar<br />apa hari ini?</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const stage = document.getElementById("stage");
+        const hLine = document.getElementById("h-line");
+        const ring = document.getElementById("ring");
+        const doraImg = document.getElementById("dora-intro");
+        const introTxt = document.getElementById("intro-text");
+        let menuReady = false;
+
+        function runIntro() {
+            const vw = window.innerWidth, vh = window.innerHeight;
+            const circSm = Math.min(vw, vh) * 0.36;
+            const circLg = Math.min(vw, vh) * 0.6;
+
+            setTimeout(() => {
+                hLine.style.opacity = "1";
+                hLine.style.transition = "width .75s cubic-bezier(.4,0,.2,1)";
+                hLine.style.width = "82%";
+            }, 200);
+
+            setTimeout(() => {
+                ring.style.opacity = "1";
+                ring.style.transition = "width .65s cubic-bezier(.34,1.56,.64,1), height .65s cubic-bezier(.34,1.56,.64,1)";
+                ring.style.width = ring.style.height = circSm + "px";
+            }, 950);
+
+            setTimeout(() => {
+                doraImg.style.width = doraImg.style.height = circSm * 0.72 + "px";
+                doraImg.style.transition = "opacity .3s, transform .65s cubic-bezier(.34,1.56,.64,1), width .4s, height .4s";
+                doraImg.style.opacity = "1";
+                doraImg.style.transform = "translate(-50%,-50%) scale(1)";
+            }, 1900);
+
+            setTimeout(() => {
+                ring.style.transition = "width .8s cubic-bezier(.34,1.56,.64,1), height .8s cubic-bezier(.34,1.56,.64,1)";
+                ring.style.width = ring.style.height = circLg + "px";
+                doraImg.style.width = doraImg.style.height = circLg * 0.68 + "px";
+                introTxt.style.transition = "opacity .7s ease .2s";
+                introTxt.style.opacity = "1";
+
+                // Auto transition to menu after a delay
+                setTimeout(toMenu, 3500);
+            }, 2900);
+        }
+
+        function toMenu() {
+            if (menuReady) return;
+            menuReady = true;
+
+            const diag = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2) * 1.1;
+            ring.style.transition = "width .7s ease-in, height .7s ease-in, background .6s ease-in, border-color .6s";
+            ring.style.width = ring.style.height = diag + "px";
+            ring.style.background = "white";
+            ring.style.borderColor = "white";
+
+            [hLine, introTxt, doraImg].forEach((el) => {
+                el.style.transition = "opacity .3s ease";
+                el.style.opacity = "0";
+            });
+
+            setTimeout(() => {
+                stage.style.display = "none";
+                document.getElementById("screen-menu").classList.add("show");
+                animateMenu();
+            }, 660);
+        }
+
+        function animateMenu() {
+            ["mt1", "mt2", "mt3", "mt4"].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.remove("drop");
+            });
+            document.getElementById("menu-dora-sit").classList.remove("walk");
+            document.getElementById("menu-dora-shadow").classList.remove("walk");
+            document.getElementById("menu-speech").classList.remove("show");
+
+            setTimeout(() => { const el = document.getElementById("mt4"); if(el) el.classList.add("drop"); }, 100);
+            setTimeout(() => { const el = document.getElementById("mt3"); if(el) el.classList.add("drop"); }, 260);
+            setTimeout(() => { const el = document.getElementById("mt2"); if(el) el.classList.add("drop"); }, 420);
+            setTimeout(() => { const el = document.getElementById("mt1"); if(el) el.classList.add("drop"); }, 580);
+
+            setTimeout(() => {
+                document.getElementById("menu-dora-sit").classList.add("walk");
+                document.getElementById("menu-dora-shadow").classList.add("walk");
+            }, 860);
+
+            setTimeout(() => {
+                document.getElementById("menu-speech").classList.add("show");
+            }, 1460);
+        }
+
+        // Jalankan intro saat halaman selesai dimuat
+        window.onload = runIntro;
+    </script>
+</body>
+</html>
